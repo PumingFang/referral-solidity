@@ -1,7 +1,8 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/utils/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/access/Ownable.sol";
 
 contract Referral is Ownable {
   using SafeMath for uint;
@@ -128,7 +129,7 @@ contract Referral is Ownable {
    * @dev Get block timestamp with function for testing mock
    */
   function getTime() public view returns(uint256) {
-    return now; // solium-disable-line security/no-block-members
+    return block.timestamp; // solium-disable-line security/no-block-members
   }
 
   /**
@@ -169,7 +170,7 @@ contract Referral is Ownable {
    * @param referrer The address would set as referrer of msg.sender
    * @return whether success to add upline
    */
-  function addReferrer(address payable referrer) internal returns(bool){
+  function addReferrer(address payable referrer) public returns(bool){
     if (referrer == address(0)) {
       emit RegisteredRefererFailed(msg.sender, referrer, "Referrer cannot be 0x0 address");
       return false;
@@ -197,7 +198,7 @@ contract Referral is Ownable {
    * @param value The number tokens will be calculated in referral process
    * @return the total referral bonus paid
    */
-  function payReferral(uint256 value) internal returns(uint256){
+  function payReferral(uint256 value) public returns(uint256){
     Account memory userAccount = accounts[msg.sender];
     uint totalReferal;
 
